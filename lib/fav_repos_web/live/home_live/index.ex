@@ -34,6 +34,7 @@ defmodule FavReposWeb.HomeLive.Index do
     save_fav_repo(html_url, socket)
   end
 
+  @impl true
   def handle_event("next", _, socket) do
     page = socket.assigns.current_page + 1
     [body: body, total_count: total_count] = Home.fetch_and_save_github_repos(socket.assigns.query, page)
@@ -47,6 +48,7 @@ defmodule FavReposWeb.HomeLive.Index do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_event("previous", _, socket) do
     page = socket.assigns.current_page - 1
     [body: body, total_count: total_count] = Home.fetch_and_save_github_repos(socket.assigns.query, page)

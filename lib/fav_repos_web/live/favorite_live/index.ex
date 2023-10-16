@@ -24,19 +24,7 @@ defmodule FavReposWeb.FavoriteLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :show, %{"id" => id}) do
-    socket
-    |> assign(:page_title, gettext("Edit Contact"))
-    |> assign(:fav_repo, Home.get_fav_repo!(id))
-  end
-
-  defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(:fav_repos, list_fav_repos(socket.assigns.current_user, @pagination))
-    |> assign(:fav_repo_count, count_fav_repos(socket.assigns.current_user))
-    |> assign(:pagination, @pagination)
-  end
-
+  @impl true
   def handle_event("next", _, socket) do
     %{offset: offset, limit: limit} = pagination = socket.assigns.pagination
     filters =
@@ -53,6 +41,7 @@ defmodule FavReposWeb.FavoriteLive.Index do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_event("previous", _, socket) do
     %{offset: offset, limit: limit} = pagination = socket.assigns.pagination
     filters =
@@ -94,6 +83,19 @@ defmodule FavReposWeb.FavoriteLive.Index do
       end
 
     {:noreply, socket}
+  end
+
+  defp apply_action(socket, :show, %{"id" => id}) do
+    socket
+    |> assign(:page_title, gettext("Edit Contact"))
+    |> assign(:fav_repo, Home.get_fav_repo!(id))
+  end
+
+  defp apply_action(socket, :index, _params) do
+    socket
+    |> assign(:fav_repos, list_fav_repos(socket.assigns.current_user, @pagination))
+    |> assign(:fav_repo_count, count_fav_repos(socket.assigns.current_user))
+    |> assign(:pagination, @pagination)
   end
 
   defp list_fav_repos(user, pagination), do: Home.list_fav_repos(user, pagination)

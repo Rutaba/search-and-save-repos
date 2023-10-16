@@ -11,6 +11,7 @@ defmodule FavReposWeb.FavoriteLive.ShowComponent do
      |> assign(:fav_repo, fav_repo)}
   end
 
+  @impl true
   def handle_event("cancel", _, socket) do
     {:noreply,
      push_redirect(socket, to: Routes.favorite_index_path(socket, :index))}
